@@ -14,6 +14,10 @@ def load_documents(folder_path):
             filepath = os.path.join(folder_path, filename)
             with open(filepath, "r", encoding="utf-8") as f:
                 text = f.read().strip()
+                # remove SOURCE header line so URLs don't get embedded as chunks
+                lines = text.split('\n')
+                lines = [l for l in lines if not l.startswith('SOURCE:') and not l.startswith('source:')]
+                text = '\n'.join(lines).strip()
             if text:
                 documents.append({
                     "source": filename,
